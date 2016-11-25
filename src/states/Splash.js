@@ -2,7 +2,9 @@ import Phaser from 'phaser'
 import { centerGameObjects } from '../utils'
 
 export default class extends Phaser.State {
-    init () {}
+    init () {
+        this.game.physics.startSystem(Phaser.Physics.ARCADE);
+    }
 
     preload () {
         this.loaderBg = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'loaderBg')
@@ -14,6 +16,7 @@ export default class extends Phaser.State {
         // load your assets
         //
         this.load.image('crosshair', 'assets/images/crosshair.png')
+        this.load.image('player', 'assets/images/player.png')
     }
 
     create () {
