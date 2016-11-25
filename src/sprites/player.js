@@ -30,7 +30,9 @@ export default class extends Phaser.Sprite {
     }
 
     lookAtCrosshair() {
-
+        var opposite = this.game.input.y - this.y;
+        var adjacent = this.game.input.x - this.x;
+        this.rotation = Math.atan2(opposite, adjacent);
     }
 }
 
