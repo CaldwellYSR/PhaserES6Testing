@@ -15,8 +15,6 @@ export default class extends Phaser.State {
         //
         // load your assets
         //
-        this.load.image('crosshair', 'assets/images/crosshair.png')
-        this.load.image('player', 'assets/images/player.png')
     }
 
     create () {
