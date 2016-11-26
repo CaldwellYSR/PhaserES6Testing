@@ -12,14 +12,6 @@ export default class extends Phaser.State {
 
     create () {
 
-        this.crosshair = new Crosshair({
-            game: this.game,
-            x: 0,
-            y: 0,
-            asset: 'crosshair'
-        })
-        this.game.add.existing(this.crosshair, 0, 0);
-
         this.player = new Player({
             game: this.game,
             x: 150,
@@ -29,6 +21,15 @@ export default class extends Phaser.State {
         })
         this.game.add.existing(this.player, 0, 0);
         this.game.physics.arcade.enable(this.player);
+
+        this.crosshair = new Crosshair({
+            game: this.game,
+            x: 0,
+            y: 0,
+            asset: 'crosshair',
+            player: this.player
+        })
+        this.game.add.existing(this.crosshair, 0, 0);
 
     }
 

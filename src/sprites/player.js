@@ -7,11 +7,17 @@ export default class extends Phaser.Sprite {
         this.anchor.setTo(0.5);
         this.speed = 250;
         this.scale.setTo(0.5, 0.5);
-        this.cursors = this.game.input.keyboard.createCursorKeys();
+        this.cursors = this.game.input.keyboard.addKeys({
+            "up": Phaser.KeyCode.W,
+            "down": Phaser.KeyCode.S,
+            "left": Phaser.KeyCode.A,
+            "right": Phaser.KeyCode.D,
+            "reload": Phaser.KeyCode.R
+        });
         this.animations.add('idle', Phaser.Animation.generateFrameNames('idle/survivor-idle_handgun_', 0, 19, '.png', 0), 15, true);
-        this.animations.add('move', Phaser.Animation.generateFrameNames('move/survivor-move_handgun_', 0, 19, '.png', 0), 15, true);
-        this.animations.add('reload', Phaser.Animation.generateFrameNames('reload/survivor-reload_handgun_', 0, 14, '.png', 0), 15, false);
-        this.animations.add('shoot', Phaser.Animation.generateFrameNames('shoot/survivor-shoot_handgun_', 0, 2, '.png', 0), 15, false);
+        this.animations.add('move', Phaser.Animation.generateFrameNames('move/survivor-move_handgun_', 0, 19, '.png', 0), 15, true).onComplete.add(this.returnIdle, this);
+        this.animations.add('reload', Phaser.Animation.generateFrameNames('reload/survivor-reload_handgun_', 0, 14, '.png', 0), 15, false).onComplete.add(this.returnIdle, this);
+        this.animations.add('shoot', Phaser.Animation.generateFrameNames('shoot/survivor-shoot_handgun_', 0, 2, '.png', 0), 15, false).onComplete.add(this.returnIdle, this);
         this.animations.play('idle');
     }
 
@@ -20,6 +26,9 @@ export default class extends Phaser.Sprite {
         this.body.velocity.y = 0;
         this.handleMovement();
         this.lookAtCrosshair();
+        if (this.cursors.reload.isDown) {
+            this.reload();
+        }
     }
 
     handleMovement() {
@@ -44,5 +53,16 @@ export default class extends Phaser.Sprite {
         var adjacent = this.game.input.x - this.x;
         this.rotation = Math.atan2(opposite, adjacent) - 0.15;
     }
+
+    reload() {
+        this.animations.stop();
+        this.animations.play('reload');
+    }
+
+    returnIdle() {
+        this.animations.stop();
+        this.animations.play('idle');
+    }
+
 }
 
