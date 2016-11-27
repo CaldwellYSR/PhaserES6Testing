@@ -8,9 +8,7 @@ export default class extends Phaser.Sprite {
         this.anchor.setTo(0.5);
         this.player = player;
         this.inputEnabled = true;
-        this.events.onInputUp.add(function() {
-            this.player.animations.play('idle');
-        }, this);
+        this.events.onInputDown.add(this.fire, this);
         this.bullets = this.game.add.group(undefined, 'Bullets', false, true, Phaser.Physics.ARCADE);
         this.nextFire = 0;
         this.bulletSpeed = 1200;
@@ -28,14 +26,14 @@ export default class extends Phaser.Sprite {
     update () {
         this.x = this.game.input.x;
         this.y = this.game.input.y;
-        if (this.game.input.activePointer.isDown) {
-            this.player.animations.play('shoot');
-            this.fire();
-        }
     }
 
     fire () {
         if (this.game.time.time < this.nextFire) { return; }
+        if (this.player.clip == 0) { return; }
+
+        this.player.animations.stop();
+        this.player.animations.play('shoot');
 
         var x = this.player.x + 10;
         var y = this.player.y + 10;
@@ -44,6 +42,7 @@ export default class extends Phaser.Sprite {
         var adjacent = this.x - this.player.x;
         var rotation = Math.atan2(opposite, adjacent);
 
+        this.player.clip -= 1;
         this.bullets.getFirstExists(false).fire(x, y, rotation, this.bulletSpeed);
 
         this.nextFire = this.game.time.time + this.fireRate;

@@ -14,6 +14,8 @@ export default class extends Phaser.Sprite {
             "right": Phaser.KeyCode.D,
             "reload": Phaser.KeyCode.R
         });
+        this.maxClip = 15;
+        this.clip = this.maxClip;
         this.setupAnimations(); 
     }
 
@@ -47,8 +49,11 @@ export default class extends Phaser.Sprite {
     setupAnimations() {
         this.animations.add('idle', Phaser.Animation.generateFrameNames('idle/survivor-idle_handgun_', 0, 19, '.png', 0), 15, true);
         this.animations.add('move', Phaser.Animation.generateFrameNames('move/survivor-move_handgun_', 0, 19, '.png', 0), 15, true).onComplete.add(this.returnIdle, this);
-        this.animations.add('reload', Phaser.Animation.generateFrameNames('reload/survivor-reload_handgun_', 0, 14, '.png', 0), 15, false).onComplete.add(this.returnIdle, this);
-        this.animations.add('shoot', Phaser.Animation.generateFrameNames('shoot/survivor-shoot_handgun_', 0, 2, '.png', 0), 15, true);
+        this.animations.add('reload', Phaser.Animation.generateFrameNames('reload/survivor-reload_handgun_', 0, 14, '.png', 0), 15, false).onComplete.add(function() {
+            this.animations.play('idle');
+            this.clip = this.maxClip;
+        }, this);
+        this.animations.add('shoot', Phaser.Animation.generateFrameNames('shoot/survivor-shoot_handgun_', 0, 2, '.png', 0), 15, false).onComplete.add(this.returnIdle, this);
         this.animations.play('idle');
     }
 
