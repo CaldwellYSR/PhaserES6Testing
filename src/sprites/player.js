@@ -14,11 +14,7 @@ export default class extends Phaser.Sprite {
             "right": Phaser.KeyCode.D,
             "reload": Phaser.KeyCode.R
         });
-        this.animations.add('idle', Phaser.Animation.generateFrameNames('idle/survivor-idle_handgun_', 0, 19, '.png', 0), 15, true);
-        this.animations.add('move', Phaser.Animation.generateFrameNames('move/survivor-move_handgun_', 0, 19, '.png', 0), 15, true).onComplete.add(this.returnIdle, this);
-        this.animations.add('reload', Phaser.Animation.generateFrameNames('reload/survivor-reload_handgun_', 0, 14, '.png', 0), 15, false).onComplete.add(this.returnIdle, this);
-        this.animations.add('shoot', Phaser.Animation.generateFrameNames('shoot/survivor-shoot_handgun_', 0, 2, '.png', 0), 15, false).onComplete.add(this.returnIdle, this);
-        this.animations.play('idle');
+        this.setupAnimations(); 
     }
 
     update () {
@@ -48,10 +44,18 @@ export default class extends Phaser.Sprite {
         }
     }
 
+    setupAnimations() {
+        this.animations.add('idle', Phaser.Animation.generateFrameNames('idle/survivor-idle_handgun_', 0, 19, '.png', 0), 15, true);
+        this.animations.add('move', Phaser.Animation.generateFrameNames('move/survivor-move_handgun_', 0, 19, '.png', 0), 15, true).onComplete.add(this.returnIdle, this);
+        this.animations.add('reload', Phaser.Animation.generateFrameNames('reload/survivor-reload_handgun_', 0, 14, '.png', 0), 15, false).onComplete.add(this.returnIdle, this);
+        this.animations.add('shoot', Phaser.Animation.generateFrameNames('shoot/survivor-shoot_handgun_', 0, 2, '.png', 0), 15, true);
+        this.animations.play('idle');
+    }
+
     lookAtCrosshair() {
         var opposite = this.game.input.y - this.y;
         var adjacent = this.game.input.x - this.x;
-        this.rotation = Math.atan2(opposite, adjacent) - 0.15;
+        this.rotation = Math.atan2(opposite, adjacent) - 0.05;
     }
 
     reload() {

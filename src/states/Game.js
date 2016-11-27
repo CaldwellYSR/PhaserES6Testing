@@ -7,10 +7,13 @@ export default class extends Phaser.State {
     init () {}
     preload () {
         this.load.image('crosshair', 'assets/images/crosshair.png')
+        this.load.image('bullet', 'assets/images/bullet.png')
         this.load.atlasJSONHash('player_map', 'assets/images/player_animations.png', 'assets/images/player_animations.json')
     }
 
     create () {
+
+        game.stage.backgroundColor = "#fff";
 
         this.player = new Player({
             game: this.game,
