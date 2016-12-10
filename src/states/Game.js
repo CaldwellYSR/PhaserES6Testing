@@ -26,8 +26,6 @@ export default class extends Phaser.State {
         this.game.add.existing(this.player, 0, 0);
         this.game.physics.arcade.enable(this.player);
 
-        this.clip = this.game.add.group();
-
         this.crosshair = new Crosshair({
             game: this.game,
             x: 0,
@@ -40,11 +38,5 @@ export default class extends Phaser.State {
     }
 
     update() {
-        this.clip.forEach(function(bullet) {
-            bullet.kill();
-        });
-        for (var i = 0; i < this.player.clip; i++) {
-            this.clip.create(25 * i, 15, 'bullet');
-        }
     }
 }
